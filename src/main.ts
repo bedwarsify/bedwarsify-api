@@ -12,7 +12,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: async ({ req }): Promise<Context> => {
-    const token = req.headers.authorization
+    const token = req.headers.authorization?.split(' ')[1]
 
     if (token === undefined) {
       return { session: null }
