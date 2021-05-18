@@ -3,7 +3,7 @@ import { Context } from '../../main'
 import { Report } from '../../typedefs'
 import { AuthenticationError, UserInputError } from 'apollo-server'
 import hypixel from '../../hypixel'
-import { getBedwarsLevelInfo } from '@zikeji/hypixel'
+import { getBedwarsLevelInfo, getPlayerRank } from '@zikeji/hypixel'
 import prisma from '../../prisma'
 
 interface Args {
@@ -69,6 +69,12 @@ export default async function createReport(
   }
 
   const reporteePlayer = await hypixel.player.uuid(args.reporteeMinecraftId)
+  const reporteeRank = getPlayerRank(reporteePlayer)
+
+  if (reporteeRank.staff || reporteeRank.cleanName === 'YOUTUBER') {
+    throw new UserInputError('You cannot report staff or youtubers')
+  }
+
   const reporteeLevel =
     reporteePlayer.stats.Bedwars !== undefined
       ? getBedwarsLevelInfo(reporteePlayer)
