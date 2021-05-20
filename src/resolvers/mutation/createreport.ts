@@ -100,13 +100,19 @@ export default async function createReport(
     )
   }
 
-  const weight = Math.floor(
-    Math.min(
-      reporterLevel.level /
-        ((reporteeLevel?.level ?? 0) === 0 ? 1 : reporteeLevel?.level ?? 1),
-      reporterLevel.level / 10
-    )
-  )
+  const weight =
+    context.session.user.role === UserRole.DEVELOPER ||
+    context.session.user.role === UserRole.COMMUNITY_MANAGER
+      ? 1000
+      : Math.floor(
+          Math.min(
+            reporterLevel.level /
+              ((reporteeLevel?.level ?? 0) === 0
+                ? 1
+                : reporteeLevel?.level ?? 1),
+            reporterLevel.level / 10
+          )
+        )
 
   return await prisma.report.create({
     data: {
