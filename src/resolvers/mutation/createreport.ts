@@ -143,7 +143,7 @@ export default async function createReport(
         select: {
           id: true,
           minecraftId: true,
-          role: tr,
+          role: true,
         },
       },
     },
