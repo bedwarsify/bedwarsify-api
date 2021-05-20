@@ -97,6 +97,7 @@ export default async function createSessionWithDiscordCode(
         select: {
           id: true,
           minecraftId: true,
+          role: true,
         },
       },
       secret: true,

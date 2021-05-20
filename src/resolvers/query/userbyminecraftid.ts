@@ -13,6 +13,7 @@ export default async function userByMinecraftId(
     select: {
       id: true,
       minecraftId: true,
+      role: true,
     },
     where: {
       minecraftId: args.minecraftId,

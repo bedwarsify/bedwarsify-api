@@ -5,7 +5,16 @@ export default gql`
   type User {
     id: ID!
     minecraftId: String
+    role: UserRole!
     reportsSummary: ReportsSummary
+  }
+
+  enum UserRole {
+    NONE
+    NITRO_BOOSTER
+    PARTNER
+    COMMUNITY_MANAGER
+    DEVELOPER
   }
 
   enum ReportsSummary {
@@ -57,6 +66,7 @@ export default gql`
 export interface User {
   id: string
   minecraftId: string | null
+  role: 'NONE' | 'NITRO_BOOSTER' | 'PARTNER' | 'COMMUNITY_MANAGER' | 'DEVELOPER'
 }
 
 export enum ReportsSummary {

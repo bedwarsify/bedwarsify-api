@@ -1,4 +1,4 @@
-import { ReportReason } from '@prisma/client'
+import { ReportReason, UserRole } from '@prisma/client'
 import { Context } from '../../main'
 import { Report } from '../../typedefs'
 import { AuthenticationError, UserInputError } from 'apollo-server'
@@ -22,6 +22,20 @@ export default async function createReport(
 
   if (args.reporteeMinecraftId === context.session.user.minecraftId) {
     throw new UserInputError('You cannot report yourself')
+  }
+
+  const reporteeUser = await prisma.user.findUnique({
+    where: {
+      minecraftId: args.reporteeMinecraftId,
+    },
+  })
+
+  if (
+    reporteeUser !== null &&
+    (reporteeUser.role === UserRole.DEVELOPER ||
+      reporteeUser.role === UserRole.COMMUNITY_MANAGER)
+  ) {
+    throw new UserInputError('You cannot report this user')
   }
 
   if (
@@ -122,12 +136,14 @@ export default async function createReport(
         select: {
           id: true,
           minecraftId: true,
+          role: true,
         },
       },
       reportee: {
         select: {
           id: true,
           minecraftId: true,
+          role: tr,
         },
       },
     },
