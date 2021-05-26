@@ -23,7 +23,8 @@ export default async function reportsSummary(
 
   const potential =
     (reports.length >= 3 && totalWeight >= 5) || totalWeight >= 10
-  const confirmed = reports.length >= 2 && totalWeight >= 50
+  const confirmed =
+    (reports.length >= 2 && totalWeight >= 50) || totalWeight >= 1000
 
   const isSniper =
     reports.filter((report) => report.reason === ReportReason.SNIPER).length >=
