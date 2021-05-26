@@ -5,6 +5,7 @@ import { AuthenticationError, UserInputError } from 'apollo-server'
 import hypixel from '../../hypixel'
 import { getBedwarsLevelInfo, getPlayerRank } from '@zikeji/hypixel'
 import prisma from '../../prisma'
+import axios from 'axios'
 
 interface Args {
   reporteeMinecraftId: string
@@ -114,7 +115,7 @@ export default async function createReport(
           )
         )
 
-  return await prisma.report.create({
+  const report = await prisma.report.create({
     data: {
       reporter: {
         connect: {
@@ -149,9 +150,66 @@ export default async function createReport(
         select: {
           id: true,
           minecraftId: true,
-          role: true,
+          role: ue,
         },
       },
     },
   })
+
+  if (process.env.REPORTS_DISCORD_WEBHOOK_URL !== undefined) {
+    const reporterRank = getPlayerRank(reporterPlayer)
+
+    await axios.post(process.env.REPORTS_DISCORD_WEBHOOK_URL, {
+      embeds: [
+        {
+          title: `[${reporteeLevel?.level ?? 0}|${(
+            (reporteePlayer.stats.Bedwars?.final_kills_bedwars ?? 0) /
+            (reporteePlayer.stats.Bedwars?.final_deaths_bedwars ?? 1)
+          ).toLocaleString(undefined, {
+            maximumFractionDigits: 2,
+          })}] ${
+            reporteeRank.cleanPrefix !== ''
+              ? `${reporteeRank.cleanPrefix} `
+              : ''
+          }${reporteePlayer.displayname}`,
+          timestamp: new Date().toISOString(),
+          color: 0xef4444,
+          thumbnail: {
+            url: `https://crafatar.com/avatars/${reporteePlayer.uuid}?size=8`,
+          },
+          author: {
+            name: `[${reporterLevel?.level ?? 0}|${(
+              (reporterPlayer.stats.Bedwars?.final_kills_bedwars ?? 0) /
+              (reporterPlayer.stats.Bedwars?.final_deaths_bedwars ?? 1)
+            ).toLocaleString(undefined, {
+              maximumFractionDigits: 2,
+            })}] ${
+              reporterRank.cleanPrefix !== ''
+                ? `${reporterRank.cleanPrefix} `
+                : ''
+            }${reporterPlayer.displayname}`,
+            icon_url: `https://crafatar.com/avatars/${reporterPlayer.uuid}?size2`,
+          },
+          fields: [
+            {
+              name: 'Reason',
+              value: args.reason === ReportReason.SNIPER ? 'Sniper' : 'Hacker',
+              inline: ue,
+            },
+            {
+              name: 'Weight',
+              value: weight,
+              inline: ue,
+            },
+            {
+              name: 'ID',
+              value: reporid,
+            },
+          ],
+        },
+      ],
+    })
+  }
+
+  return report
 }
