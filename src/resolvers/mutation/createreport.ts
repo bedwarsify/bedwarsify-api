@@ -175,7 +175,7 @@ export default async function createReport(
           timestamp: new Date().toISOString(),
           color: 0xef4444,
           thumbnail: {
-            url: `https://crafatar.com/avatars/${reporteePlayer.uuid}?size=8`,
+            url: `https://crafatar.com/avatars/${reporteePlayer.uuid}?size=128&default=MHF_Steve`,
           },
           author: {
             name: `[${reporterLevel?.level ?? 0}|${(
@@ -188,7 +188,7 @@ export default async function createReport(
                 ? `${reporterRank.cleanPrefix} `
                 : ''
             }${reporterPlayer.displayname}`,
-            icon_url: `https://crafatar.com/avatars/${reporterPlayer.uuid}?size2`,
+            icon_url: `https://crafatar.com/avatars/${reporterPlayer.uuid}?size=32&default=MHF_Steve`,
           },
           fields: [
             {
