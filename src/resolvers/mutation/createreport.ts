@@ -150,7 +150,7 @@ export default async function createReport(
         select: {
           id: true,
           minecraftId: true,
-          role: ue,
+          role: true,
         },
       },
     },
@@ -194,16 +194,16 @@ export default async function createReport(
             {
               name: 'Reason',
               value: args.reason === ReportReason.SNIPER ? 'Sniper' : 'Hacker',
-              inline: ue,
+              inline: true,
             },
             {
               name: 'Weight',
               value: weight,
-              inline: ue,
+              inline: true,
             },
             {
               name: 'ID',
-              value: reporid,
+              value: report.id,
             },
           ],
         },
