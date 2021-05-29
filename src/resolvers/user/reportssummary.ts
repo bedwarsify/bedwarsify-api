@@ -21,8 +21,7 @@ export default async function reportsSummary(
     0
   )
 
-  const potential =
-    (reports.length >= 3 && totalWeight >= 5) || totalWeight >= 10
+  const potential = reports.length >= 3 || totalWeight >= 5
   const confirmed =
     (reports.length >= 2 && totalWeight >= 50) || totalWeight >= 1000
 
