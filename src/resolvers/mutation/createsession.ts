@@ -100,6 +100,8 @@ export default async function createSession(
           id: true,
           minecraftId: true,
           role: true,
+          customTagText: true,
+          customTagColor: true,
         },
       },
       secret: true,

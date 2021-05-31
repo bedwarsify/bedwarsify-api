@@ -14,6 +14,8 @@ export default async function userByMinecraftId(
       id: true,
       minecraftId: true,
       role: true,
+      customTagText: true,
+      customTagColor: true,
     },
     where: {
       minecraftId: args.minecraftId,

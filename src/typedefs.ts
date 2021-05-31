@@ -7,6 +7,8 @@ export default gql`
     minecraftId: String
     role: UserRole!
     reportsSummary: ReportsSummary
+    customTagText: String
+    customTagColor: Int
   }
 
   enum UserRole {
@@ -76,6 +78,8 @@ export interface User {
   id: string
   minecraftId: string | null
   role: 'NONE' | 'NITRO_BOOSTER' | 'PARTNER' | 'COMMUNITY_MANAGER' | 'DEVELOPER'
+  customTagText: string | null
+  customTagColor: number | null
 }
 
 export enum ReportsSummary {

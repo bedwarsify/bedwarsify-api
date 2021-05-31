@@ -144,6 +144,8 @@ export default async function createReport(
           id: true,
           minecraftId: true,
           role: true,
+          customTagText: true,
+          customTagColor: true,
         },
       },
       reportee: {
@@ -151,6 +153,8 @@ export default async function createReport(
           id: true,
           minecraftId: true,
           role: true,
+          customTagText: true,
+          customTagColor: true,
         },
       },
     },
