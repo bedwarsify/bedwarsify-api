@@ -1,4 +1,4 @@
-import { Session } from '../../typedefs'
+import { CreateSessionProvider, Session } from '../../typedefs'
 import axios, { AxiosResponse } from 'axios'
 import * as querystring from 'querystring'
 import { UserInputError } from 'apollo-server'
@@ -9,8 +9,10 @@ import { promisify } from 'util'
 
 const randomBytesPromisified = promisify(randomBytes)
 
-interface Args {
-  discordCode: string
+type Args = {
+  provider: CreateSessionProvider
+  code?: string
+  discordCode?: string
 }
 
 interface DiscordTokenResponse {
@@ -35,7 +37,7 @@ interface DiscordUsersMeResponse {
   public_flags: number | undefined
 }
 
-export default async function createSessionWithDiscordCode(
+export default async function createSession(
   {} = {},
   args: Args
 ): Promise<Session> {
@@ -46,7 +48,7 @@ export default async function createSessionWithDiscordCode(
         client_id: process.env.DISCORD_CLIENT_ID,
         client_secret: process.env.DISCORD_CLIENT_SECRET,
         grant_type: 'authorization_code',
-        code: args.discordCode,
+        code: args.code ?? args.discordCode,
         redirect_uri: 'http://localhost',
       })
     )

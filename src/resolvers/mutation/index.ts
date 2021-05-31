@@ -1,7 +1,8 @@
-import createSessionWithDiscordCode from './createsessionwithdiscordcode'
+import createSession from './createsession'
 import createReport from './createreport'
 
 export default {
-  createSessionWithDiscordCode,
+  createSession,
+  createSessionWithDiscordCode: createSession,
   createReport,
 }

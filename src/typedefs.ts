@@ -55,11 +55,20 @@ export default gql`
   }
 
   type Mutation {
+    createSession(
+      provider: CreateSessionProvider!
+      code: String!
+      type: SessionType!
+    ): Session!
     createSessionWithDiscordCode(
       discordCode: String!
       type: SessionType!
     ): Session!
     createReport(reporteeMinecraftId: String!, reason: ReportReason!): Report!
+  }
+
+  enum CreateSessionProvider {
+    DISCORD
   }
 `
 
@@ -94,4 +103,8 @@ export interface Report {
   reportee: User
   reason: ReportReason
   weight: number
+}
+
+export enum CreateSessionProvider {
+  DISCORD = 'DISCORD',
 }
