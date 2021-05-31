@@ -21,6 +21,10 @@ export default async function createReport(
     throw new AuthenticationError('Authentication required')
   }
 
+  if (!context.session.user.canReport) {
+    throw new AuthenticationError('You cannot report')
+  }
+
   if (args.reporteeMinecraftId === context.session.user.minecraftId) {
     throw new UserInputError('You cannot report yourself')
   }
