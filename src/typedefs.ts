@@ -77,7 +77,13 @@ export default gql`
 export interface User {
   id: string
   minecraftId: string | null
-  role: 'NONE' | 'NITRO_BOOSTER' | 'PARTNER' | 'COMMUNITY_MANAGER' | 'DEVELOPER'
+  role:
+    | 'NONE'
+    | 'NITRO_BOOSTER'
+    | 'PARTNER'
+    | 'HELPER'
+    | 'COMMUNITY_MANAGER'
+    | 'DEVELOPER'
   customTagText: string | null
   customTagColor: number | null
 }
