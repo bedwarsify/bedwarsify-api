@@ -15,6 +15,7 @@ export default gql`
     NONE
     NITRO_BOOSTER
     PARTNER
+    HELPER
     COMMUNITY_MANAGER
     DEVELOPER
   }
