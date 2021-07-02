@@ -55,6 +55,7 @@ export default gql`
   type Query {
     userByMinecraftId(minecraftId: ID!): User
     session: Session
+    suspicious(minecraftId: ID!): Boolean
   }
 
   type Mutation {

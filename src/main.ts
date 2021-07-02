@@ -3,6 +3,7 @@ import typeDefs from './typedefs'
 import resolvers from './resolvers'
 import prisma from './prisma'
 import { Session, User } from '@prisma/client'
+import Redis from 'ioredis'
 
 export interface Context {
   session: (Session & { user: User }) | null
@@ -38,3 +39,5 @@ const server = new ApolloServer({
 server.listen({ port: process.env.PORT || 8080 }).then(({ url }) => {
   console.log(`Ready at ${url}`)
 })
+
+export const redis = new Redis(process.env.REDIS_URL)
