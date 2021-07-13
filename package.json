@@ -31,7 +31,7 @@
     "singleQuote": true
   },
   "dependencies": {
-    "@prisma/client": "^2.22.1",
+    "@prisma/client": "^2.27.0",
     "@zikeji/hypixel": "^3.1.1",
     "apollo-server": "^2.24.0",
     "axios": "^0.21.1",
