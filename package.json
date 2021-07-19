@@ -33,7 +33,7 @@
   "dependencies": {
     "@prisma/client": "^2.22.1",
     "@zikeji/hypixel": "^3.1.1",
-    "apollo-server": "^2.24.0",
+    "apollo-server": "^3.0.1",
     "axios": "^0.21.1",
     "bedwarsify-prisma": "git+https://npm@github.com/bedwarsify/bedwarsify-prisma.git",
     "dotenv": "^9.0.2",
