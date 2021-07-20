@@ -37,7 +37,7 @@
     "axios": "^0.21.1",
     "bedwarsify-prisma": "git+https://npm@github.com/bedwarsify/bedwarsify-prisma.git",
     "dotenv": "^9.0.2",
-    "graphql": "^15.5.0",
+    "graphql": "^15.5.1",
     "ioredis": "^4.27.6"
   },
   "devDependencies": {
