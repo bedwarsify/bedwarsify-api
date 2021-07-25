@@ -58,11 +58,15 @@ export default async function createReport(
     throw new UserInputError('You have already reported this user')
   }
 
+  const bypass =
+    context.session.user.role === UserRole.DEVELOPER ||
+    context.session.user.role === UserRole.COMMUNITY_MANAGER
+
   const reporterPlayer = await hypixel.player.uuid(
     context.session.user.minecraftId!
   )
 
-  if (reporterPlayer.stats.Bedwars === undefined) {
+  if (!bypass && reporterPlayer.stats.Bedwars === undefined) {
     throw new UserInputError(
       'You must be at least Bed Wars level 50 to report players'
     )
@@ -70,7 +74,7 @@ export default async function createReport(
 
   const reporterLevel = getBedwarsLevelInfo(reporterPlayer)
 
-  if (reporterLevel.level < 50) {
+  if (!bypass && reporterLevel.level < 50) {
     throw new UserInputError('You must be at least level 50 to report players')
   }
 
@@ -83,14 +87,20 @@ export default async function createReport(
     },
   })
 
-  if (reporterRecentReportsCount >= Math.ceil(reporterLevel.level / 100)) {
+  if (
+    !bypass &&
+    reporterRecentReportsCount >= Math.ceil(reporterLevel.level / 100)
+  ) {
     throw new UserInputError('You cannot submit any more reports at the moment')
   }
 
   const reporteePlayer = await hypixel.player.uuid(args.reporteeMinecraftId)
   const reporteeRank = getPlayerRank(reporteePlayer)
 
-  if (reporteeRank.staff || reporteeRank.cleanName === 'YOUTUBER') {
+  if (
+    (!bypass && reporteeRank.staff) ||
+    reporteeRank.cleanName === 'YOUTUBER'
+  ) {
     throw new UserInputError('You cannot report staff or youtubers')
   }
 
@@ -99,25 +109,21 @@ export default async function createReport(
       ? getBedwarsLevelInfo(reporteePlayer)
       : null
 
-  if ((reporteeLevel?.level ?? 0) > reporterLevel.level / 2) {
+  if (!bypass && (reporteeLevel?.level ?? 0) > reporterLevel.level / 2) {
     throw new UserInputError(
       'You can only report players who are not more than half your level'
     )
   }
 
-  const weight =
-    context.session.user.role === UserRole.DEVELOPER ||
-    context.session.user.role === UserRole.COMMUNITY_MANAGER
-      ? 1000
-      : Math.floor(
-          Math.min(
-            reporterLevel.level /
-              ((reporteeLevel?.level ?? 0) === 0
-                ? 1
-                : reporteeLevel?.level ?? 1),
-            reporterLevel.level / 10
-          )
+  const weight = bypass
+    ? 1000
+    : Math.floor(
+        Math.min(
+          reporterLevel.level /
+            ((reporteeLevel?.level ?? 0) === 0 ? 1 : reporteeLevel?.level ?? 1),
+          reporterLevel.level / 10
         )
+      )
 
   const report = await prisma.report.create({
     data: {
